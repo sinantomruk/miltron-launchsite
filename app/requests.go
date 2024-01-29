@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/sinantomruk/miltron-launchsite/models"
 )
@@ -40,6 +41,7 @@ func (a *App) doReq(method, url string, v interface{}) error {
 	for i := 0; i < 3; i++ {
 		res, err := doReq(req)
 		if err != nil {
+			time.Sleep(time.Millisecond * 100)
 			continue
 		}
 		if err = parseResponse(res, v); err != nil {

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"encoding/binary"
 	"fmt"
 	"math"
@@ -23,7 +24,7 @@ func checkCRC(data []byte) bool {
 	return crc == sum
 }
 
-func readTelemetry(host string, port int, dataChan chan<- models.TelemetryData) error {
+func ReadTelemetry(ctx context.Context, host string, port int, dataChan chan<- models.TelemetryData) error {
 	conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
 		return err
@@ -42,8 +43,6 @@ func readTelemetry(host string, port int, dataChan chan<- models.TelemetryData) 
 
 		dataChan <- models.TelemetryData{
 			RocketID:     string(buffer[1:11]),
-			PacketNumber: buffer[11],
-			PacketSize:   buffer[12],
 			Altitude:     bytesToFloat32(buffer[13:17]),
 			Speed:        bytesToFloat32(buffer[17:21]),
 			Acceleration: bytesToFloat32(buffer[21:25]),
