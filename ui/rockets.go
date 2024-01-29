@@ -50,16 +50,25 @@ func (rc *RocketsContainer) onButtonClick(buttons map[string]*widget.Button, but
 			if err != nil {
 				return
 			}
+			buttons["launch"].Show()
+			buttons["cancel"].Hide()
+			buttons["deploy"].Hide()
 		} else if button == "launch" {
 			ri, err = rc.rocketController.LaunchRocket(rocketId)
 			if err != nil {
 				return
 			}
+			buttons["launch"].Hide()
+			buttons["cancel"].Show()
+			buttons["deploy"].Hide()
 		} else if button == "cancel" {
 			ri, err = rc.rocketController.CancelLaunch(rocketId)
 			if err != nil {
 				return
 			}
+			buttons["launch"].Hide()
+			buttons["cancel"].Hide()
+			buttons["deploy"].Hide()
 		}
 		if ri != nil {
 			historyDetails.Items = []*widget.FormItem{}
@@ -74,20 +83,6 @@ func (rc *RocketsContainer) onButtonClick(buttons map[string]*widget.Button, but
 				}
 			}
 			statusLabel.SetText(ri.Status)
-
-			if ri.Status == models.RocketStatusWaiting {
-				buttons["launch"].Hide()
-				buttons["cancel"].Hide()
-				buttons["deploy"].Show()
-			} else if ri.Status == models.RocketStatusDeployed {
-				buttons["launch"].Show()
-				buttons["cancel"].Hide()
-				buttons["deploy"].Hide()
-			} else if ri.Status == models.RocketStatusLaunched {
-				buttons["launch"].Hide()
-				buttons["cancel"].Show()
-				buttons["deploy"].Hide()
-			}
 		}
 	}
 }
