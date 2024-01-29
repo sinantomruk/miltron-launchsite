@@ -161,6 +161,10 @@ func (rc *RocketsContainer) showDetails(ri *models.RocketInfo) func() {
 			buttons["launch"].Hide()
 			buttons["cancel"].Show()
 			buttons["deploy"].Hide()
+		} else if ri.Status == models.RocketStatusCancelled {
+			buttons["launch"].Hide()
+			buttons["cancel"].Hide()
+			buttons["deploy"].Hide()
 		}
 
 		buttons["launch"].OnTapped = rc.onButtonClick(buttons, "launch", statusLabel, historyDetails, ri.ID)
